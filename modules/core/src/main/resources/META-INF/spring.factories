@@ -1,6 +1,9 @@
 org.springframework.context.ApplicationListener=\
 org.springframework.init.FunctionalInstallerListener
 
+org.springframework.init.EnableSelectedAutoConfiguration=\
+org.springframework.init.SpringBootSelectedAutoConfigurations
+
 org.springframework.context.ApplicationContextInitializer=\
 org.springframework.init.TestModuleInitializer
 
