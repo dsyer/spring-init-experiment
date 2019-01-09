@@ -81,7 +81,7 @@ public class EnableSelectedAutoConfigurationImportSelector
 		for (String value : values) {
 			StopWatch stop = new StopWatch("selected");
 			String[] mappings = (String[]) metadata.getAnnotationAttributes(
-					EnableSelectedAutoConfiguration.class.getName(), true).get("mappings");
+					EnableSelectedAutoConfiguration.class.getName(), true).get("styles");
 			if (mappings != null) {
 				for (String root : mappings) {
 					if (!mapped.contains(root)) {

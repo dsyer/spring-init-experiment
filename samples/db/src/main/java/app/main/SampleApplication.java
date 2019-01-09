@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.init.SpringInitApplication;
+import org.springframework.init.config.DataConfigurations;
+import org.springframework.init.config.WebFluxConfigurations;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
@@ -18,8 +20,9 @@ import app.main.foo.FooRepository;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-@SpringInitApplication({ JdbcTemplateAutoConfiguration.class,
-		JacksonAutoConfiguration.class, WebFluxAutoConfiguration.class })
+@SpringInitApplication(classes = { JdbcTemplateAutoConfiguration.class,
+		JacksonAutoConfiguration.class, WebFluxAutoConfiguration.class }, styles = {
+				DataConfigurations.class, WebFluxConfigurations.class })
 public class SampleApplication {
 
 	private FooRepository entities;

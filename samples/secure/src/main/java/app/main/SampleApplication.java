@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurity
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.init.SpringInitApplication;
+import org.springframework.init.config.ReactiveSecurityConfigurations;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
@@ -19,8 +20,8 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 
 import reactor.core.publisher.Mono;
 
-@SpringInitApplication({ WebFluxAutoConfiguration.class,
-		ReactiveSecurityAutoConfiguration.class })
+@SpringInitApplication(classes = { WebFluxAutoConfiguration.class,
+		ReactiveSecurityAutoConfiguration.class }, styles = ReactiveSecurityConfigurations.class)
 public class SampleApplication {
 
 	@Value("${app.value}")

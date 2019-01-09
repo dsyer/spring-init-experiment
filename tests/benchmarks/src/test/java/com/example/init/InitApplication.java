@@ -16,7 +16,7 @@ import org.springframework.init.EnableSelectedAutoConfiguration;
 import org.springframework.init.SpringInitApplication;
 import org.springframework.init.config.WebFluxConfigurations;
 
-@SpringInitApplication(classes=WebFluxAutoConfiguration.class, mappings=WebFluxConfigurations.class)
+@SpringInitApplication(classes=WebFluxAutoConfiguration.class, styles=WebFluxConfigurations.class)
 public class InitApplication {
 
 	public static void main(String[] args) {

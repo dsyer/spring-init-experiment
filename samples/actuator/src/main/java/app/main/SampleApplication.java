@@ -22,7 +22,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 import reactor.core.publisher.Mono;
 
 @SpringInitApplication(classes = { WebFluxAutoConfiguration.class,
-		EndpointAutoConfiguration.class }, mappings = {
+		EndpointAutoConfiguration.class }, styles = {
 				HealthIndicatorAutoConfiguration.class, WebFluxConfigurations.class })
 public class SampleApplication {
 

@@ -19,7 +19,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 
 import reactor.core.publisher.Mono;
 
-@SpringInitApplication(classes=WebFluxAutoConfiguration.class, mappings=WebFluxConfigurations.class)
+@SpringInitApplication(classes=WebFluxAutoConfiguration.class, styles=WebFluxConfigurations.class)
 public class SampleApplication {
 
 	@Value("${app.value}")
