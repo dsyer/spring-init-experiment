@@ -46,8 +46,6 @@ public @interface EnableSelectedAutoConfiguration {
 	@AliasFor("value")
 	Class<?>[] classes() default {};
 
-	Class<?>[] exclude() default {};
-
-	String[] excludeName() default {};
+	Class<?>[] mappings() default {};
 
 }

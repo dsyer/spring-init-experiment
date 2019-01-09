@@ -51,4 +51,7 @@ public @interface SpringInitApplication {
 	@AliasFor(annotation = EnableSelectedAutoConfiguration.class)
 	Class<?>[] classes() default {};
 
+	@AliasFor(annotation = EnableSelectedAutoConfiguration.class)
+	Class<?>[] mappings() default {};
+
 }

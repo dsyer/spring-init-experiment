@@ -14,28 +14,19 @@
  * limitations under the License.
  */
 
-package org.springframework.init;
+package org.springframework.init.config;
 
 import org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
-import org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.reactive.ReactiveUserDetailsServiceAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityRequestMatcherProviderAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.HttpHandlerAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.ReactiveWebServerFactoryAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
+import org.springframework.init.SelectedAutoConfiguration;
 
 /**
  * @author Dave Syer
@@ -43,28 +34,14 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
  */
 @SelectedAutoConfiguration(root = ConfigurationPropertiesAutoConfiguration.class, values = {
 		PropertyPlaceholderAutoConfiguration.class })
-@SelectedAutoConfiguration(root = WebFluxAutoConfiguration.class, values = {
-		ReactiveWebServerFactoryAutoConfiguration.class,
-		ErrorWebFluxAutoConfiguration.class, HttpHandlerAutoConfiguration.class,
-		ConfigurationPropertiesAutoConfiguration.class })
 @SelectedAutoConfiguration(root = WebMvcAutoConfiguration.class, values = {
 		ServletWebServerFactoryAutoConfiguration.class, ErrorMvcAutoConfiguration.class,
 		DispatcherServletAutoConfiguration.class,
 		ConfigurationPropertiesAutoConfiguration.class })
-@SelectedAutoConfiguration(root = ReactiveSecurityAutoConfiguration.class, values = {
-		ReactiveUserDetailsServiceAutoConfiguration.class,
-		WebFluxAutoConfiguration.class })
 @SelectedAutoConfiguration(root = SecurityAutoConfiguration.class, values = {
 		UserDetailsServiceAutoConfiguration.class,
 		SecurityRequestMatcherProviderAutoConfiguration.class,
 		SecurityFilterAutoConfiguration.class, WebMvcAutoConfiguration.class })
-@SelectedAutoConfiguration(root = JdbcTemplateAutoConfiguration.class, values = {
-		DataSourceAutoConfiguration.class,
-		ConfigurationPropertiesAutoConfiguration.class })
-@SelectedAutoConfiguration(root = JacksonAutoConfiguration.class, values = {
-		ConfigurationPropertiesAutoConfiguration.class })
-@SelectedAutoConfiguration(root = MustacheAutoConfiguration.class, values = {
-		ConfigurationPropertiesAutoConfiguration.class })
-public class SpringBootSelectedAutoConfigurations {
+public class ServletSecurityConfigurations {
 
 }

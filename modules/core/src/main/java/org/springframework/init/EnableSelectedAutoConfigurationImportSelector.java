@@ -30,7 +30,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.init.SelectedAutoConfiguration.SelectedAutoConfigurations;
 import org.springframework.util.ClassUtils;
@@ -42,12 +41,15 @@ import org.springframework.util.StopWatch;
  */
 public class EnableSelectedAutoConfigurationImportSelector
 		extends AutoConfigurationImportSelector {
-	
-	private static Log logger = LogFactory.getLog(EnableSelectedAutoConfigurationImportSelector.class);
+
+	private static Log logger = LogFactory
+			.getLog(EnableSelectedAutoConfigurationImportSelector.class);
 
 	private static final String[] NO_IMPORTS = {};
 
-	private static Map<String, Set<String>> mappings;
+	private static Map<String, Set<String>> mappings = new HashMap<>();
+
+	private static Set<String> mapped = new HashSet<>();
 
 	@Override
 	public String[] selectImports(AnnotationMetadata metadata) {
@@ -75,38 +77,48 @@ public class EnableSelectedAutoConfigurationImportSelector
 	private List<String> computeImports(AnnotationMetadata metadata) {
 		String[] values = (String[]) metadata.getAnnotationAttributes(
 				EnableSelectedAutoConfiguration.class.getName(), true).get("value");
+		String[] mappings = (String[]) metadata.getAnnotationAttributes(
+				EnableSelectedAutoConfiguration.class.getName(), true).get("mappings");
 		Set<String> result = new LinkedHashSet<>();
 		for (String value : values) {
-			if (mappings == null) {
-				StopWatch stop = new StopWatch("selected");
-				stop.start();
-				mappings = new HashMap<>();
-				for (String factory : SpringFactoriesLoader
-						.loadFactoryNames(EnableSelectedAutoConfiguration.class, null)) {
-					if (ClassUtils.isPresent(factory, null)) {
-						Class<?> type = ClassUtils.resolveClassName(factory, null);
-						if (AnnotationUtils.isAnnotationDeclaredLocally(
-								SelectedAutoConfigurations.class, type)) {
-							SelectedAutoConfigurations configs = AnnotationUtils
-									.findAnnotation(type,
-											SelectedAutoConfigurations.class);
-							for (SelectedAutoConfiguration selected : configs.value()) {
-								AnnotationAttributes attrs = AnnotationUtils
-										.getAnnotationAttributes(selected, true, false);
-								String[] mapped = attrs.getStringArray("values");
-								mappings.computeIfAbsent(attrs.getString("root"),
-										k -> new LinkedHashSet<>())
-										.addAll(Arrays.asList(mapped));
+			StopWatch stop = new StopWatch("selected");
+			if (mappings != null) {
+				for (String root : mappings) {
+					if (!mapped.contains(root)) {
+						mapped.add(root);
+						stop.start(root);
+						if (ClassUtils.isPresent(root, null)) {
+							Class<?> type = ClassUtils.resolveClassName(root, null);
+							if (AnnotationUtils.isAnnotationDeclaredLocally(
+									SelectedAutoConfigurations.class, type)) {
+								SelectedAutoConfigurations configs = AnnotationUtils
+										.findAnnotation(type,
+												SelectedAutoConfigurations.class);
+								for (SelectedAutoConfiguration selected : configs
+										.value()) {
+									AnnotationAttributes attrs = AnnotationUtils
+											.getAnnotationAttributes(selected, true,
+													false);
+									String[] mapped = attrs.getStringArray("values");
+									EnableSelectedAutoConfigurationImportSelector.mappings
+											.computeIfAbsent(attrs.getString("root"),
+													k -> new LinkedHashSet<>())
+											.addAll(Arrays.asList(mapped));
+								}
 							}
 						}
+						stop.stop();
+						computeCrossReferences();
 					}
 				}
-				computeCrossReferences();
-				stop.stop();
+			}
+			if (stop.getTaskCount() > 0) {
 				logger.info("Initialized autoconfig mappings: " + stop);
 			}
-			if (mappings.containsKey(value)) {
-				result.addAll(mappings.get(value));
+			if (EnableSelectedAutoConfigurationImportSelector.mappings
+					.containsKey(value)) {
+				result.addAll(EnableSelectedAutoConfigurationImportSelector.mappings
+						.get(value));
 			}
 			result.add(value);
 		}
@@ -118,7 +130,7 @@ public class EnableSelectedAutoConfigurationImportSelector
 			extend(mapping, new HashSet<>());
 		}
 	}
-	
+
 	private boolean extend(Set<String> mapping, Set<String> seen) {
 		int count = mapping.size();
 		for (String mapped : new ArrayList<>(mapping)) {
