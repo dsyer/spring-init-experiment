@@ -47,5 +47,10 @@ public @interface EnableSelectedAutoConfiguration {
 	Class<?>[] classes() default {};
 
 	Class<?>[] mappings() default {};
+	
+	// For compatiblility with @EnableAutoConfiguration
+	Class<?>[] exclude() default {};
 
+	// For compatiblility with @EnableAutoConfiguration
+	String[] excludeName() default {};
 }
