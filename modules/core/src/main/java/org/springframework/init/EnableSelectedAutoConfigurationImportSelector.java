@@ -77,11 +77,11 @@ public class EnableSelectedAutoConfigurationImportSelector
 	private List<String> computeImports(AnnotationMetadata metadata) {
 		String[] values = (String[]) metadata.getAnnotationAttributes(
 				EnableSelectedAutoConfiguration.class.getName(), true).get("value");
-		String[] mappings = (String[]) metadata.getAnnotationAttributes(
-				EnableSelectedAutoConfiguration.class.getName(), true).get("mappings");
 		Set<String> result = new LinkedHashSet<>();
 		for (String value : values) {
 			StopWatch stop = new StopWatch("selected");
+			String[] mappings = (String[]) metadata.getAnnotationAttributes(
+					EnableSelectedAutoConfiguration.class.getName(), true).get("mappings");
 			if (mappings != null) {
 				for (String root : mappings) {
 					if (!mapped.contains(root)) {
@@ -99,11 +99,13 @@ public class EnableSelectedAutoConfigurationImportSelector
 									AnnotationAttributes attrs = AnnotationUtils
 											.getAnnotationAttributes(selected, true,
 													false);
-									String[] mapped = attrs.getStringArray("values");
-									EnableSelectedAutoConfigurationImportSelector.mappings
-											.computeIfAbsent(attrs.getString("root"),
-													k -> new LinkedHashSet<>())
-											.addAll(Arrays.asList(mapped));
+									String[] mapped = attrs.getStringArray("value");
+									for (String key : mapped) {
+										EnableSelectedAutoConfigurationImportSelector.mappings
+												.computeIfAbsent(key,
+														k -> new LinkedHashSet<>())
+												.addAll(Arrays.asList(mapped));
+									}
 								}
 							}
 						}

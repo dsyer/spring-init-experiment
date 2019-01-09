@@ -25,9 +25,9 @@ import org.springframework.init.SelectedAutoConfiguration;
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration(root = ConfigurationPropertiesAutoConfiguration.class, values = {
+@SelectedAutoConfiguration({ ConfigurationPropertiesAutoConfiguration.class,
 		PropertyPlaceholderAutoConfiguration.class })
-@SelectedAutoConfiguration(root = JacksonAutoConfiguration.class, values = {
+@SelectedAutoConfiguration({ JacksonAutoConfiguration.class,
 		ConfigurationPropertiesAutoConfiguration.class })
 public class JacksonConfigurations {
 

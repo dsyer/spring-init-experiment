@@ -26,9 +26,9 @@ import org.springframework.init.SelectedAutoConfiguration;
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration(root = ConfigurationPropertiesAutoConfiguration.class, values = {
+@SelectedAutoConfiguration({ ConfigurationPropertiesAutoConfiguration.class,
 		PropertyPlaceholderAutoConfiguration.class })
-@SelectedAutoConfiguration(root = JdbcTemplateAutoConfiguration.class, values = {
+@SelectedAutoConfiguration({ JdbcTemplateAutoConfiguration.class,
 		DataSourceAutoConfiguration.class,
 		ConfigurationPropertiesAutoConfiguration.class })
 public class DataConfigurations {

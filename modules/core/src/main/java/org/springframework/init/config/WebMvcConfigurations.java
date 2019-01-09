@@ -28,9 +28,9 @@ import org.springframework.init.SelectedAutoConfiguration;
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration(root = ConfigurationPropertiesAutoConfiguration.class, values = {
+@SelectedAutoConfiguration({ ConfigurationPropertiesAutoConfiguration.class,
 		PropertyPlaceholderAutoConfiguration.class })
-@SelectedAutoConfiguration(root = WebMvcAutoConfiguration.class, values = {
+@SelectedAutoConfiguration({ WebMvcAutoConfiguration.class,
 		ServletWebServerFactoryAutoConfiguration.class, ErrorMvcAutoConfiguration.class,
 		DispatcherServletAutoConfiguration.class,
 		ConfigurationPropertiesAutoConfiguration.class })

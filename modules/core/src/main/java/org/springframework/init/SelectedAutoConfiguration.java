@@ -36,9 +36,11 @@ import org.springframework.init.SelectedAutoConfiguration.SelectedAutoConfigurat
 @Repeatable(SelectedAutoConfigurations.class)
 public @interface SelectedAutoConfiguration {
 
-	Class<?>[] values() default {};
+	Class<?>[] value() default {};
 
-	Class<?> root();
+	Class<?>[] root() default {};
+	
+	Class<?>[] imports() default {};
 	
 	@Target(ElementType.TYPE)
 	@Retention(RetentionPolicy.RUNTIME)

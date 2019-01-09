@@ -24,7 +24,7 @@ import org.springframework.init.SelectedAutoConfiguration;
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration(root = ConfigurationPropertiesAutoConfiguration.class, values = {
+@SelectedAutoConfiguration({ ConfigurationPropertiesAutoConfiguration.class,
 		PropertyPlaceholderAutoConfiguration.class })
 public class BasicConfigurations {
 
