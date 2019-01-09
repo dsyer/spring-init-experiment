@@ -16,8 +16,6 @@
 
 package org.springframework.init.config;
 
-import org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration;
-import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.init.SelectedAutoConfiguration;
 
@@ -25,10 +23,7 @@ import org.springframework.init.SelectedAutoConfiguration;
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration({ ConfigurationPropertiesAutoConfiguration.class,
-		PropertyPlaceholderAutoConfiguration.class })
-@SelectedAutoConfiguration({ JacksonAutoConfiguration.class,
-		ConfigurationPropertiesAutoConfiguration.class })
+@SelectedAutoConfiguration(classes = JacksonAutoConfiguration.class, depends = BasicConfigurations.class)
 public class JacksonConfigurations {
 
 }

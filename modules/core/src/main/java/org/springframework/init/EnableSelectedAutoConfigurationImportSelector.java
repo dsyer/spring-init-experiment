@@ -17,6 +17,8 @@ package org.springframework.init;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -31,7 +33,6 @@ import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.init.SelectedAutoConfiguration.SelectedAutoConfigurations;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StopWatch;
 
@@ -80,8 +81,10 @@ public class EnableSelectedAutoConfigurationImportSelector
 		Set<String> result = new LinkedHashSet<>();
 		for (String value : values) {
 			StopWatch stop = new StopWatch("selected");
-			String[] mappings = (String[]) metadata.getAnnotationAttributes(
-					EnableSelectedAutoConfiguration.class.getName(), true).get("styles");
+			String[] mappings = (String[]) metadata
+					.getAnnotationAttributes(
+							EnableSelectedAutoConfiguration.class.getName(), true)
+					.get("styles");
 			if (mappings != null) {
 				for (String root : mappings) {
 					if (!mapped.contains(root)) {
@@ -89,23 +92,16 @@ public class EnableSelectedAutoConfigurationImportSelector
 						stop.start(root);
 						if (ClassUtils.isPresent(root, null)) {
 							Class<?> type = ClassUtils.resolveClassName(root, null);
-							if (AnnotationUtils.isAnnotationDeclaredLocally(
-									SelectedAutoConfigurations.class, type)) {
-								SelectedAutoConfigurations configs = AnnotationUtils
-										.findAnnotation(type,
-												SelectedAutoConfigurations.class);
-								for (SelectedAutoConfiguration selected : configs
-										.value()) {
-									AnnotationAttributes attrs = AnnotationUtils
-											.getAnnotationAttributes(selected, true,
-													false);
-									String[] mapped = attrs.getStringArray("value");
-									for (String key : mapped) {
-										EnableSelectedAutoConfigurationImportSelector.mappings
-												.computeIfAbsent(key,
-														k -> new LinkedHashSet<>())
-												.addAll(Arrays.asList(mapped));
-									}
+							for (SelectedAutoConfiguration selected : findSelected(
+									type)) {
+								AnnotationAttributes attrs = AnnotationUtils
+										.getAnnotationAttributes(selected, true, false);
+								String[] mapped = attrs.getStringArray("value");
+								for (String key : mapped) {
+									EnableSelectedAutoConfigurationImportSelector.mappings
+											.computeIfAbsent(key,
+													k -> new LinkedHashSet<>())
+											.addAll(Arrays.asList(mapped));
 								}
 							}
 						}
@@ -125,6 +121,21 @@ public class EnableSelectedAutoConfigurationImportSelector
 			result.add(value);
 		}
 		return new ArrayList<>(result);
+	}
+
+	private Collection<SelectedAutoConfiguration> findSelected(Class<?> type) {
+		if (!AnnotationUtils.isAnnotationDeclaredLocally(SelectedAutoConfiguration.class,
+				type)) {
+			return Collections.emptySet();
+		}
+		Set<SelectedAutoConfiguration> list = new LinkedHashSet<>();
+		SelectedAutoConfiguration configs = AnnotationUtils.findAnnotation(type,
+				SelectedAutoConfiguration.class);
+		list.add(configs);
+		for (Class<?> depend : configs.depends()) {
+			list.addAll(findSelected(depend));
+		}
+		return list;
 	}
 
 	private void computeCrossReferences() {

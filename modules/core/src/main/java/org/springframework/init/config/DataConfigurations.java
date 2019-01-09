@@ -16,8 +16,6 @@
 
 package org.springframework.init.config;
 
-import org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration;
-import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.init.SelectedAutoConfiguration;
@@ -26,11 +24,8 @@ import org.springframework.init.SelectedAutoConfiguration;
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration({ ConfigurationPropertiesAutoConfiguration.class,
-		PropertyPlaceholderAutoConfiguration.class })
-@SelectedAutoConfiguration({ JdbcTemplateAutoConfiguration.class,
-		DataSourceAutoConfiguration.class,
-		ConfigurationPropertiesAutoConfiguration.class })
+@SelectedAutoConfiguration(classes = { JdbcTemplateAutoConfiguration.class,
+		DataSourceAutoConfiguration.class }, depends = BasicConfigurations.class)
 public class DataConfigurations {
 
 }

@@ -16,8 +16,6 @@
 
 package org.springframework.init.config;
 
-import org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration;
-import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
@@ -28,12 +26,9 @@ import org.springframework.init.SelectedAutoConfiguration;
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration({ ConfigurationPropertiesAutoConfiguration.class,
-		PropertyPlaceholderAutoConfiguration.class })
-@SelectedAutoConfiguration({ WebMvcAutoConfiguration.class,
+@SelectedAutoConfiguration(classes = { WebMvcAutoConfiguration.class,
 		ServletWebServerFactoryAutoConfiguration.class, ErrorMvcAutoConfiguration.class,
-		DispatcherServletAutoConfiguration.class,
-		ConfigurationPropertiesAutoConfiguration.class })
+		DispatcherServletAutoConfiguration.class }, depends = BasicConfigurations.class)
 public class WebMvcConfigurations {
 
 }

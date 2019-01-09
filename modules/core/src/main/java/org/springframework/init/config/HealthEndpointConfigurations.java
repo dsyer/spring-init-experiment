@@ -30,12 +30,12 @@ import org.springframework.init.SelectedAutoConfiguration;
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration({ EndpointAutoConfiguration.class,
+@SelectedAutoConfiguration(classes = { EndpointAutoConfiguration.class,
 		HealthIndicatorAutoConfiguration.class, HealthEndpointAutoConfiguration.class,
 		InfoEndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
 		ReactiveManagementContextAutoConfiguration.class,
 		ConfigurationPropertiesAutoConfiguration.class,
-		ManagementContextAutoConfiguration.class })
+		ManagementContextAutoConfiguration.class }, depends = BasicConfigurations.class)
 public class HealthEndpointConfigurations {
 
 }

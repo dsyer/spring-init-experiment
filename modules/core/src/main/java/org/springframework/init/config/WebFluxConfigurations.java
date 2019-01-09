@@ -16,8 +16,6 @@
 
 package org.springframework.init.config;
 
-import org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration;
-import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.HttpHandlerAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.ReactiveWebServerFactoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
@@ -28,12 +26,10 @@ import org.springframework.init.SelectedAutoConfiguration;
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration({ ConfigurationPropertiesAutoConfiguration.class,
-		PropertyPlaceholderAutoConfiguration.class })
-@SelectedAutoConfiguration({ WebFluxAutoConfiguration.class,
+@SelectedAutoConfiguration(classes = { WebFluxAutoConfiguration.class,
 		ReactiveWebServerFactoryAutoConfiguration.class,
-		ErrorWebFluxAutoConfiguration.class, HttpHandlerAutoConfiguration.class,
-		ConfigurationPropertiesAutoConfiguration.class })
+		ErrorWebFluxAutoConfiguration.class,
+		HttpHandlerAutoConfiguration.class }, depends = BasicConfigurations.class)
 public class WebFluxConfigurations {
 
 }

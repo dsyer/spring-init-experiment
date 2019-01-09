@@ -18,12 +18,11 @@ package org.springframework.init;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.init.SelectedAutoConfiguration.SelectedAutoConfigurations;
+import org.springframework.core.annotation.AliasFor;
 
 /**
  * @author Dave Syer
@@ -33,21 +32,14 @@ import org.springframework.init.SelectedAutoConfiguration.SelectedAutoConfigurat
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Repeatable(SelectedAutoConfigurations.class)
 public @interface SelectedAutoConfiguration {
 
+	@AliasFor("classes")
 	Class<?>[] value() default {};
 
-	Class<?>[] root() default {};
+	@AliasFor("value")
+	Class<?>[] classes() default {};
 	
-	Class<?>[] imports() default {};
-	
-	@Target(ElementType.TYPE)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@Inherited
-	public static @interface SelectedAutoConfigurations {
-		SelectedAutoConfiguration[] value();
-	}
+	Class<?>[] depends() default {};
 
 }

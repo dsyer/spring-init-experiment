@@ -16,32 +16,20 @@
 
 package org.springframework.init.config;
 
-import org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration;
-import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityRequestMatcherProviderAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.init.SelectedAutoConfiguration;
 
 /**
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration({ ConfigurationPropertiesAutoConfiguration.class,
-		PropertyPlaceholderAutoConfiguration.class })
-@SelectedAutoConfiguration({ WebMvcAutoConfiguration.class,
-		ServletWebServerFactoryAutoConfiguration.class, ErrorMvcAutoConfiguration.class,
-		DispatcherServletAutoConfiguration.class,
-		ConfigurationPropertiesAutoConfiguration.class })
-@SelectedAutoConfiguration({ SecurityAutoConfiguration.class,
+@SelectedAutoConfiguration(classes = { SecurityAutoConfiguration.class,
 		UserDetailsServiceAutoConfiguration.class,
 		SecurityRequestMatcherProviderAutoConfiguration.class,
-		SecurityFilterAutoConfiguration.class, WebMvcAutoConfiguration.class })
+		SecurityFilterAutoConfiguration.class }, depends = WebMvcConfigurations.class)
 public class ServletSecurityConfigurations {
 
 }
