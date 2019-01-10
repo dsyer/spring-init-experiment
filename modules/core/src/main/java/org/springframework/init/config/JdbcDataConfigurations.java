@@ -16,16 +16,14 @@
 
 package org.springframework.init.config;
 
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration;
 import org.springframework.init.SelectedAutoConfiguration;
 
 /**
  * @author Dave Syer
  *
  */
-@SelectedAutoConfiguration(classes = { JdbcTemplateAutoConfiguration.class,
-		DataSourceAutoConfiguration.class }, depends = BasicConfigurations.class)
-public class DataConfigurations {
+@SelectedAutoConfiguration(classes = JdbcRepositoriesAutoConfiguration.class, depends = JdbcConfigurations.class)
+public class JdbcDataConfigurations {
 
 }

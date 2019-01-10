@@ -81,46 +81,40 @@ public class EnableSelectedAutoConfigurationImportSelector
 		Set<String> result = new LinkedHashSet<>();
 		for (String value : values) {
 			StopWatch stop = new StopWatch("selected");
-			String[] mappings = (String[]) metadata
-					.getAnnotationAttributes(
-							EnableSelectedAutoConfiguration.class.getName(), true)
-					.get("styles");
-			if (mappings != null) {
-				for (String root : mappings) {
-					if (!mapped.contains(root)) {
-						mapped.add(root);
-						stop.start(root);
-						if (ClassUtils.isPresent(root, null)) {
-							Class<?> type = ClassUtils.resolveClassName(root, null);
-							for (SelectedAutoConfiguration selected : findSelected(
-									type)) {
-								AnnotationAttributes attrs = AnnotationUtils
-										.getAnnotationAttributes(selected, true, false);
-								String[] mapped = attrs.getStringArray("value");
-								for (String key : mapped) {
-									EnableSelectedAutoConfigurationImportSelector.mappings
-											.computeIfAbsent(key,
-													k -> new LinkedHashSet<>())
-											.addAll(Arrays.asList(mapped));
-								}
-							}
-						}
-						stop.stop();
-						computeCrossReferences();
-					}
+			if (!mapped.contains(value)) {
+				mapped.add(value);
+				if (!ClassUtils.isPresent(value, null)) {
+					continue;
 				}
-			}
-			if (stop.getTaskCount() > 0) {
-				logger.info("Initialized autoconfig mappings: " + stop);
+				Class<?> resolved = ClassUtils.resolveClassName(value, null);
+				if (AnnotationUtils.isAnnotationDeclaredLocally(
+						SelectedAutoConfiguration.class, resolved)) {
+					stop.start(value);
+					for (SelectedAutoConfiguration selected : findSelected(resolved)) {
+						AnnotationAttributes attrs = AnnotationUtils
+								.getAnnotationAttributes(selected, true, false);
+						String[] mapped = attrs.getStringArray("value");
+						EnableSelectedAutoConfigurationImportSelector.mappings
+								.computeIfAbsent(value, k -> new LinkedHashSet<>())
+								.addAll(Arrays.asList(mapped));
+					}
+					stop.stop();
+				}
+				if (stop.getTaskCount() > 0) {
+					logger.info("Initialized autoconfig mappings: " + stop);
+				}
 			}
 			if (EnableSelectedAutoConfigurationImportSelector.mappings
 					.containsKey(value)) {
 				result.addAll(EnableSelectedAutoConfigurationImportSelector.mappings
 						.get(value));
 			}
-			result.add(value);
+			else {
+				result.add(value);
+			}
 		}
 		return new ArrayList<>(result);
+
 	}
 
 	private Collection<SelectedAutoConfiguration> findSelected(Class<?> type) {
@@ -136,30 +130,6 @@ public class EnableSelectedAutoConfigurationImportSelector
 			list.addAll(findSelected(depend));
 		}
 		return list;
-	}
-
-	private void computeCrossReferences() {
-		for (Set<String> mapping : mappings.values()) {
-			extend(mapping, new HashSet<>());
-		}
-	}
-
-	private boolean extend(Set<String> mapping, Set<String> seen) {
-		int count = mapping.size();
-		for (String mapped : new ArrayList<>(mapping)) {
-			if (seen.contains(mapped)) {
-				continue;
-			}
-			seen.add(mapped);
-			if (mappings.containsKey(mapped)) {
-				mapping.addAll(mappings.get(mapped));
-			}
-		}
-		boolean result = mapping.size() > count;
-		if (result) {
-			result = extend(mapping, seen);
-		}
-		return result;
 	}
 
 	@Override

@@ -2,12 +2,9 @@ package app.main;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.init.SpringInitApplication;
-import org.springframework.init.config.DataConfigurations;
+import org.springframework.init.config.JdbcConfigurations;
 import org.springframework.init.config.WebFluxConfigurations;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
@@ -20,9 +17,7 @@ import app.main.foo.FooRepository;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-@SpringInitApplication(classes = { JdbcTemplateAutoConfiguration.class,
-		JacksonAutoConfiguration.class, WebFluxAutoConfiguration.class }, styles = {
-				DataConfigurations.class, WebFluxConfigurations.class })
+@SpringInitApplication({ JdbcConfigurations.class, WebFluxConfigurations.class })
 public class SampleApplication {
 
 	private FooRepository entities;

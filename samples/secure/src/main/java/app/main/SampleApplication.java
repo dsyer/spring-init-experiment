@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.init.SpringInitApplication;
@@ -20,8 +19,8 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 
 import reactor.core.publisher.Mono;
 
-@SpringInitApplication(classes = { WebFluxAutoConfiguration.class,
-		ReactiveSecurityAutoConfiguration.class }, styles = ReactiveSecurityConfigurations.class)
+@SpringInitApplication({ WebFluxAutoConfiguration.class,
+		ReactiveSecurityConfigurations.class })
 public class SampleApplication {
 
 	@Value("${app.value}")

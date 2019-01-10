@@ -46,8 +46,6 @@ public @interface EnableSelectedAutoConfiguration {
 	@AliasFor("value")
 	Class<?>[] classes() default {};
 
-	Class<?>[] styles() default {};
-	
 	// For compatiblility with @EnableAutoConfiguration
 	Class<?>[] exclude() default {};
 
