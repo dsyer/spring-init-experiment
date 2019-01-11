@@ -52,7 +52,7 @@ public class PetClinicBenchmarkIT {
     public static class MainState extends ProcessLauncherState {
 
         public static enum Config {
-            auto, init;
+            auto, init, less;
         }
 
         public static enum Sample {
@@ -94,6 +94,11 @@ public class PetClinicBenchmarkIT {
             if (config == Config.auto) {
                 setMainClass(
                         org.springframework.samples.petclinic.auto.PetClinicApplication.class
+                                .getName());
+            }
+            else if (config == Config.less) {
+                setMainClass(
+                        org.springframework.samples.petclinic.less.PetClinicApplication.class
                                 .getName());
             }
             super.before();
