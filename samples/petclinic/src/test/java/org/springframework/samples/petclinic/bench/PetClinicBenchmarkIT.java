@@ -31,7 +31,7 @@ import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
 
 import org.springframework.init.bench.ProcessLauncherState;
-import org.springframework.samples.petclinic.PetClinicApplication;
+import org.springframework.samples.petclinic.init.PetClinicApplication;
 
 import jmh.mbr.junit5.Microbenchmark;
 
@@ -42,54 +42,62 @@ import jmh.mbr.junit5.Microbenchmark;
 @Microbenchmark
 public class PetClinicBenchmarkIT {
 
-	@Benchmark
-	public void auto(MainState state) throws Exception {
-		state.run();
-	}
+    @Benchmark
+    public void auto(MainState state) throws Exception {
+        state.run();
+    }
 
-	@State(Scope.Thread)
-	@AuxCounters(Type.EVENTS)
-	public static class MainState extends ProcessLauncherState {
+    @State(Scope.Thread)
+    @AuxCounters(Type.EVENTS)
+    public static class MainState extends ProcessLauncherState {
 
-		public static enum Sample {
-			demo, actr, tx, cache;
-		}
+        public static enum Config {
+            auto, init;
+        }
 
-		@Param
-		private Sample sample = Sample.demo;
+        public static enum Sample {
+            demo, actr;
+        }
 
-		public MainState() {
-			super(PetClinicApplication.class, "target", "--server.port=0");
-		}
+        @Param
+        private Sample sample = Sample.demo;
 
-		@Override
-		public int getClasses() {
-			return super.getClasses();
-		}
+        @Param
+        private Config config = Config.init;
 
-		@Override
-		public int getBeans() {
-			return super.getBeans();
-		}
+        public MainState() {
+            super(PetClinicApplication.class, "target", "--server.port=0");
+            // @EnableJpaRepositories doesn't work with functional beans yet
+            addArgs("-Dspring.functional.enabled=false");
+        }
 
-		@TearDown(Level.Invocation)
-		public void stop() throws Exception {
-			super.after();
-		}
+        @Override
+        public int getClasses() {
+            return super.getClasses();
+        }
 
-		@Setup(Level.Trial)
-		public void start() throws Exception {
-			if (sample != Sample.demo) {
-				setProfiles(sample.toString());
-			}
-			if (sample == Sample.tx) {
-				addArgs("-Dspring.profiles.active=tx");
-			}
-			else if (sample == Sample.cache) {
-				addArgs("-Dspring.profiles.active=tx,cache");
-			}
-			super.before();
-		}
-	}
+        @Override
+        public int getBeans() {
+            return super.getBeans();
+        }
+
+        @TearDown(Level.Invocation)
+        public void stop() throws Exception {
+            super.after();
+        }
+
+        @Setup(Level.Trial)
+        public void start() throws Exception {
+            if (sample != Sample.demo) {
+                setProfiles(sample.toString());
+            }
+            if (config == Config.auto) {
+                setMainClass(
+                        org.springframework.samples.petclinic.auto.PetClinicApplication.class
+                                .getName());
+            }
+            super.before();
+        }
+    }
 
 }
