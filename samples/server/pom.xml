@@ -19,6 +19,12 @@
 			<artifactId>spring-boot-autoconfigure</artifactId>
 			<version>${generated.version}</version>
 			<classifier>func</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.experimental</groupId>
@@ -30,6 +36,11 @@
 		<dependency>
 			<groupId>org.springframework.experimental</groupId>
 			<artifactId>spring-init-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.experimental</groupId>
+			<artifactId>spring-init-aspects</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -52,6 +63,10 @@
 					<groupId>org.hibernate.validator</groupId>
 					<artifactId>hibernate-validator</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -71,6 +86,10 @@
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>

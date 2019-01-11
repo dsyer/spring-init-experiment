@@ -1,10 +1,3 @@
-package config;
-
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-
-import org.springframework.beans.BeanInfoFactory;
-
 /*
  * Copyright 2016-2017 the original author or authors.
  *
@@ -20,17 +13,34 @@ import org.springframework.beans.BeanInfoFactory;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.springframework.init.factory;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import org.springframework.core.annotation.AliasFor;
 
 /**
  * @author Dave Syer
  *
  */
-public class SpringBootBeanInfoFactory implements BeanInfoFactory {
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+public @interface SpringFactory {
 
-	@Override
-	public BeanInfo getBeanInfo(Class<?> beanClass) throws IntrospectionException {
-		System.err.println("BeanInfo: " + beanClass.getName());
-		return new SpringBootBeanInfo(beanClass);
-	}
+	@AliasFor("key")
+	Class<?> value() default None.class;
 
+	@AliasFor("value")
+	Class<?> key() default None.class;
+	
+	Class<?>[] classes() default {};
+
+	public static class None {}
 }
