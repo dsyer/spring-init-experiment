@@ -6,10 +6,17 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.context.ContextIdApplicationContextInitializer;
+import org.springframework.boot.context.config.ConfigFileApplicationListener;
+import org.springframework.boot.context.logging.LoggingApplicationListener;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.init.SpringInitApplication;
 import org.springframework.init.config.WebFluxConfigurations;
+import org.springframework.init.factory.FactorySpringApplication;
+import org.springframework.init.factory.SpringApplicationCustomizers;
+import org.springframework.init.factory.SpringFactory;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
@@ -19,6 +26,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 import reactor.core.publisher.Mono;
 
 @SpringInitApplication(WebFluxConfigurations.class)
+@SpringApplicationCustomizers(SimpleFactories.class)
 public class SampleApplication {
 
 	@Value("${app.value}")
@@ -41,6 +49,15 @@ public class SampleApplication {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(SampleApplication.class, args);
+		FactorySpringApplication.run(SampleApplication.class, args);
 	}
+}
+
+@SpringApplicationCustomizers(factories = {
+		@SpringFactory(key = ApplicationListener.class, classes = {
+				ConfigFileApplicationListener.class, LoggingApplicationListener.class }),
+		@SpringFactory(key = ApplicationContextInitializer.class, classes = {
+				ContextIdApplicationContextInitializer.class }) })
+class SimpleFactories {
+
 }
