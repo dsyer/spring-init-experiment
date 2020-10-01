@@ -21,6 +21,11 @@
 	  ]
 	},
 	{
+	  "name": "app.main.foo.Foo",
+	  "allDeclaredConstructors": true,
+	  "allPublicMethods": true
+	},
+	{
 	  "name": "app.main.foo.FooRepository",
 	  "allDeclaredConstructors": true,
 	  "allPublicMethods": true
