@@ -64,12 +64,6 @@
 		"allDeclaredMethods": true
 	},
 	{
-		"name": "java.sql.DatabaseMetaData",
-		"allDeclaredFields": true,
-		"allDeclaredConstructors": true,
-		"allDeclaredMethods": true
-	},
-	{
 		"name": "java.sql.Statement",
 		"allDeclaredFields": true,
 		"allDeclaredConstructors": true,
